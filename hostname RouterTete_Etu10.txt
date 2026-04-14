@@ -1,0 +1,96 @@
+hostname RouterTete_Etu10
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+username admin secret 5 $1$mERr$cl/pG4z8KIO87LHBosT71/
+!
+!
+license udi pid CISCO1941/K9 sn FTX1524JM25-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip ssh version 2
+ip domain-name etu10.sae
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ ip address 172.32.11.1 255.255.255.0
+ duplex auto
+ speed auto
+ no shut
+!
+interface GigabitEthernet0/0/0.704
+ encapsulation dot1Q 704
+ ip address 192.168.108.45 255.255.248.0
+ no shut
+!
+interface GigabitEthernet0/0/1
+ ip address 172.32.131.1 255.255.255.252
+
+ duplex auto
+ speed auto
+ no shut
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 10.10.10.1
+ log-adjacency-changes
+ network 172.32.11.0 0.0.0.255 area 0
+ network 172.32.131.0 0.0.0.3 area 0
+ network 192.168.104.0 0.0.7.255 area 0
+ default-information originate
+! 
+ip classless
+!
+ip flow-export version 9
+!
+!
+access-list 10 permit 172.32.71.0 0.0.0.255
+access-list 10 permit 192.168.104.0 0.0.7.255
+access-list 10 deny any
+!
+banner motd ^C
+Routeur de Tete - Etudiant 10
+Acces non autorise
+^C
+!
+!
+!
+! 
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+!
+end
